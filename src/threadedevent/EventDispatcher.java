@@ -21,8 +21,8 @@ package threadedevent;
 
 /*
  * Author: User
- * Created: 2010. október 26. 13:29:14
- * Modified: 2010. október 26. 13:29:14
+ * Created: 2010. oct 26. 13:29:14
+ * Modified: 2010. oct 26. 13:29:14
  */
 
 import java.util.Vector;

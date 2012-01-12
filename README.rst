@@ -1,8 +1,7 @@
-README
+INTRO
 ======
 
-=stream.m a WebM live streaming server=
-*stream.m* is created to be an _open source_ solution for streaming live video
+stream.m is created to be an open source solution for streaming live video
 right into the web browser using the HTML5 video tag and Google's WebM video
 format.
 
@@ -13,7 +12,7 @@ congestion.
 
 Also supports simultaneous streams (channels).
 
-_Note: the recommended ffmpeg options changed. You can use -f webm for
+Note: the recommended ffmpeg options changed. You can use -f webm for
 Firefox compatibility._
 
 
@@ -53,7 +52,9 @@ The port number can be set in the configuration file. Default port is: 8080
 RUNNING THE SERVER
 ==================
 
-java StreamingServer <configfile>
+Usage::
+
+ java StreamingServer <configfile>
 
 The release version has the classes in a .jar archive. Before running the
 server you should edit the sample config file (change password and choose a
@@ -75,18 +76,15 @@ must be POSTed to this URL to start broadcasting::
 
  /publish/<streamname>?password=<streampass>
 
-
 A stream can be accessed (watched) on the following URL. You may want to insert
 this URL into a HTML5 <video> tag::
 
  /consume/<streamname>
 
-
 A shapshot (the first keyframe of the last completed fragment) can be downloaded
 in WebP format on the URL::
 
  /snapshot/<streamname>
-
 
 Realtime information can be acquired thru an AJAX based console (giving the name
 and password for the chosen stream on the UI)::
@@ -112,20 +110,18 @@ it to a temporary format (mp3). FFmpeg will connect to VLC to get the audio
 and VFW for the video, re-encodes audio to ogg-vorbis and video to VP8, mux
 them into a WebM container and POSTs it to the given URL.
 
-
 VLC will listen to the local port: 8081 for FFmpeg to connect, so paranoid
-firewalls should be aware. Assumptions (without the quotes)::
+firewalls should be aware. Assumptions (without the quotes):
 
  * server name: "example.com"
  * stream name: "first"
  * stream password: "secret"
 
-
+Examples::
+    
  vlc -I dummy dshow:// --sout \
  "#transcode{vcodec=none,acodec=mp3,ab=128,channels=2,samplerate=44100} :http{mux=ts,dst=127.0.0.1:8081/}" \
  --dshow-vdev=none --no-sout-rtp-sap --no-sout-standard-sap --sout-keep
-
-
 
  ffmpeg -f vfwcap -r 16 -i 0 -i http://localhost:8081/ -g 52 \
  -acodec libvorbis -ab 64k -vcodec libvpx -vb 448k \
@@ -136,7 +132,6 @@ PUBLISHING ON LINUX
 ===================
 
 ...is not tested yet. But you will probably be allright with something like::
-
 
  ffmpeg -f video4linux2 -s 320x240 -r 16 -i /dev/video0 -f oss -i /dev/dsp -g 52 \
  -acodec libvorbis -ab 64k -vcodec libvpx -vb 448k \
@@ -150,10 +145,8 @@ You can test the installation with the downloadable sample video, _univac.webm_.
 The file is encoded with an average of 512Kbps. _FFmpeg_ can send the stream in
 real-time (real bitrate) to the server with the following command::
 
-
  ffmpeg.exe -i univac.webm -vcodec copy -acodec copy -re \
  -f webm http://localhost:8080/publish/first?password=secret
-
 
 You can watch it by positioning your (WebM-capable) browser to::
 

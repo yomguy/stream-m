@@ -57,9 +57,9 @@ java StreamingServer <configfile>
 
 The release version has the classes in a .jar archive. Before running the
 server you should edit the sample config file (change password and choose a
-stream name). So you will end up with something like:
+stream name). So you will end up with something like::
 
-java -cp lib/stream-m.jar StreamingServer server.conf
+ java -cp lib/stream-m.jar StreamingServer server.conf
 
 
 HTTP ACCES
@@ -71,27 +71,27 @@ substitution is expected, they must not be included in the resulting URL.
 
 
 The name and password of each stream is defined in the config file. A stream
-must be POSTed to this URL to start broadcasting:
+must be POSTed to this URL to start broadcasting::
 
-/publish/<streamname>?password=<streampass>
+ /publish/<streamname>?password=<streampass>
 
 
 A stream can be accessed (watched) on the following URL. You may want to insert
-this URL into a HTML5 <video> tag:
+this URL into a HTML5 <video> tag::
 
-/consume/<streamname>
+ /consume/<streamname>
 
 
 A shapshot (the first keyframe of the last completed fragment) can be downloaded
-in WebP format on the URL:
+in WebP format on the URL::
 
-/snapshot/<streamname>
+ /snapshot/<streamname>
 
 
 Realtime information can be acquired thru an AJAX based console (giving the name
-and password for the chosen stream on the UI):
+and password for the chosen stream on the UI)::
 
-/console/client.html
+ /console/client.html
 
 
 PUBLISHING ON WINDOWS
@@ -114,32 +114,33 @@ them into a WebM container and POSTs it to the given URL.
 
 
 VLC will listen to the local port: 8081 for FFmpeg to connect, so paranoid
-firewalls should be aware. Assumptions (without the quotes):
+firewalls should be aware. Assumptions (without the quotes)::
+
  * server name: "example.com"
  * stream name: "first"
  * stream password: "secret"
 
 
-vlc -I dummy dshow:// --sout \
-"#transcode{vcodec=none,acodec=mp3,ab=128,channels=2,samplerate=44100} :http{mux=ts,dst=127.0.0.1:8081/}" \
---dshow-vdev=none --no-sout-rtp-sap --no-sout-standard-sap --sout-keep
+ vlc -I dummy dshow:// --sout \
+ "#transcode{vcodec=none,acodec=mp3,ab=128,channels=2,samplerate=44100} :http{mux=ts,dst=127.0.0.1:8081/}" \
+ --dshow-vdev=none --no-sout-rtp-sap --no-sout-standard-sap --sout-keep
 
 
 
-ffmpeg -f vfwcap -r 16 -i 0 -i http://localhost:8081/ -g 52 \
--acodec libvorbis -ab 64k -vcodec libvpx -vb 448k \
--f matroska http://example.com:8080/publish/first?password=secret
+ ffmpeg -f vfwcap -r 16 -i 0 -i http://localhost:8081/ -g 52 \
+ -acodec libvorbis -ab 64k -vcodec libvpx -vb 448k \
+ -f matroska http://example.com:8080/publish/first?password=secret
 
 
 PUBLISHING ON LINUX
 ===================
 
-...is not tested yet. But you will probably be allright with something like:
+...is not tested yet. But you will probably be allright with something like::
 
 
-ffmpeg -f video4linux2 -s 320x240 -r 16 -i /dev/video0 -f oss -i /dev/dsp -g 52 \
--acodec libvorbis -ab 64k -vcodec libvpx -vb 448k \
--f webm http://example.com:8080/publish/first?password=secret
+ ffmpeg -f video4linux2 -s 320x240 -r 16 -i /dev/video0 -f oss -i /dev/dsp -g 52 \
+ -acodec libvorbis -ab 64k -vcodec libvpx -vb 448k \
+ -f webm http://example.com:8080/publish/first?password=secret
 
 
 TESTING
@@ -147,14 +148,14 @@ TESTING
 
 You can test the installation with the downloadable sample video, _univac.webm_.
 The file is encoded with an average of 512Kbps. _FFmpeg_ can send the stream in
-real-time (real bitrate) to the server with the following command:
+real-time (real bitrate) to the server with the following command::
 
 
-ffmpeg.exe -i univac.webm -vcodec copy -acodec copy -re \
--f webm http://localhost:8080/publish/first?password=secret
+ ffmpeg.exe -i univac.webm -vcodec copy -acodec copy -re \
+ -f webm http://localhost:8080/publish/first?password=secret
 
 
-You can watch it by positioning your (WebM-capable) browser to:
+You can watch it by positioning your (WebM-capable) browser to::
 
-http://localhost:8080/consume/first
+ http://localhost:8080/consume/first
 

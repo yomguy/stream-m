@@ -5,6 +5,17 @@
 # Syntactic elements (words) can be separated by linear whitepace.
 #
 
+# server.bindAddress
+# example: 127.0.0.1, 192.168.1.1
+# localhost. www.example.com also work
+server.bindAddress = localhost
+
+# server.backlog
+# connection queue 
+# defaults to 100 if not set
+# server.backlog = 100
+
+
 # server.port
 # listening port
 server.port = 8080

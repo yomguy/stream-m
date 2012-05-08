@@ -1,0 +1,27 @@
+From a3b602ba4e19f759f391beb387bd277ef4222094 Mon Sep 17 00:00:00 2001
+From: yomguy <yomguy@parisson.com>
+Date: Mon, 26 Mar 2012 19:18:38 +0200
+Subject: [PATCH 3/3] fix doc
+
+---
+ README.rst |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/README.rst b/README.rst
+index 15cc0d7..98d248c 100644
+--- a/README.rst
++++ b/README.rst
+@@ -63,8 +63,8 @@ stream name). So you will end up with something like::
+  java -cp lib/stream-m.jar StreamingServer server.conf
+ 
+ 
+-HTTP ACCES
+-==========
++HTTP ACCESS
++============
+ 
+ Streams are identified by a name. The program refers to this as StreamID or
+ streamname. Note that the < and > characters are used just to signal that
+-- 
+1.7.9
+

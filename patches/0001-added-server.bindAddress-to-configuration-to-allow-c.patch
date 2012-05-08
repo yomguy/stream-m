@@ -1,0 +1,92 @@
+From 21b649cea6887840c1048cf9e1569a1c7e69ea6c Mon Sep 17 00:00:00 2001
+From: Deni Bertovic <deni@element.hr>
+Date: Mon, 26 Mar 2012 16:45:10 +0200
+Subject: [PATCH 1/2] added server.bindAddress to configuration to allow
+ choosing what interface the server will listen on and
+ not just the port
+
+---
+ server.conf.sample                      |   11 +++++++++++
+ src/StreamingServer.java                |    9 ++++++++-
+ src/org/czentral/minihttp/MiniHTTP.java |   11 +++++++++--
+ 3 files changed, 28 insertions(+), 3 deletions(-)
+
+diff --git a/server.conf.sample b/server.conf.sample
+index a72bf45..c5c64c1 100644
+--- a/server.conf.sample
++++ b/server.conf.sample
+@@ -5,6 +5,17 @@
+ # Syntactic elements (words) can be separated by linear whitepace.
+ #
+ 
++# server.bindAddress
++# example: 127.0.0.1, 192.168.1.1
++# localhost. www.example.com also work
++server.bindAddress = localhost
++
++# server.backlog
++# connection queue 
++# defaults to 100 if not set
++# server.backlog = 100
++
++
+ # server.port
+ # listening port
+ server.port = 8080
+diff --git a/src/StreamingServer.java b/src/StreamingServer.java
+index ad9a671..8678881 100644
+--- a/src/StreamingServer.java
++++ b/src/StreamingServer.java
+@@ -67,8 +67,15 @@ class StreamingServer {
+ 	
+ 	public void run() {
+ 		String serverPort = settings.get("server.port");
++		String serverBindAddress = settings.get("server.bindAddress");
++		String serverBackLog = settings.get("server.backlog");
++		//default to 100 if not set
++		if (serverBackLog == null){
++			serverBackLog = "100";
++		}
++		
+ 		System.out.println("Stating server on port: " + serverPort);
+-		MiniHTTP server = new MiniHTTP(Integer.parseInt(serverPort));
++		MiniHTTP server = new MiniHTTP(Integer.parseInt(serverPort), Integer.parseInt(serverBackLog), serverBindAddress);
+ 		
+ 		PublisherResource publish = new PublisherResource();
+ 		server.registerResource("/publish", publish);
+diff --git a/src/org/czentral/minihttp/MiniHTTP.java b/src/org/czentral/minihttp/MiniHTTP.java
+index 3d4024e..906dfc6 100644
+--- a/src/org/czentral/minihttp/MiniHTTP.java
++++ b/src/org/czentral/minihttp/MiniHTTP.java
+@@ -32,19 +32,26 @@ import org.czentral.util.stream.*;
+ public class MiniHTTP extends Thread {
+ 	
+ 	protected int port;
++	protected int backlog;
++
++	//bind address or hostname
++	protected String bindAddress;
+ 	
+ 	protected Map<String,HTTPResource> resources = new HashMap<String,HTTPResource>();
+ 	
+-	public MiniHTTP(int port) {
++	public MiniHTTP(int port, int backlog, String bindAddress) {
+ 		super();
+ 		this.port = port;
++		this.backlog = backlog;
++		this.bindAddress = bindAddress;
++
+ 	}
+ 	
+ 	public void run() {
+ 		
+ 		ServerSocket sock = null;
+ 		try {
+-			sock = new ServerSocket(port);
++			sock = new ServerSocket(port, backlog, InetAddress.getByName(bindAddress));
+ 		} catch (IOException e) {
+ 			throw new RuntimeException("MiniHTTP can not listen on given port: " + port);
+ 		}
+-- 
+1.7.9
+

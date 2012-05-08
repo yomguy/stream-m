@@ -67,15 +67,8 @@ class StreamingServer {
 	
 	public void run() {
 		String serverPort = settings.get("server.port");
-		String serverBindAddress = settings.get("server.bindAddress");
-		String serverBackLog = settings.get("server.backlog");
-		//default to 100 if not set
-		if (serverBackLog == null){
-			serverBackLog = "100";
-		}
-		
 		System.out.println("Stating server on port: " + serverPort);
-		MiniHTTP server = new MiniHTTP(Integer.parseInt(serverPort), Integer.parseInt(serverBackLog), serverBindAddress);
+		MiniHTTP server = new MiniHTTP(Integer.parseInt(serverPort));
 		
 		PublisherResource publish = new PublisherResource();
 		server.registerResource("/publish", publish);

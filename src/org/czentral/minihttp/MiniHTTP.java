@@ -32,26 +32,19 @@ import org.czentral.util.stream.*;
 public class MiniHTTP extends Thread {
 	
 	protected int port;
-	protected int backlog;
-
-	//bind address or hostname
-	protected String bindAddress;
 	
 	protected Map<String,HTTPResource> resources = new HashMap<String,HTTPResource>();
 	
-	public MiniHTTP(int port, int backlog, String bindAddress) {
+	public MiniHTTP(int port) {
 		super();
 		this.port = port;
-		this.backlog = backlog;
-		this.bindAddress = bindAddress;
-
 	}
 	
 	public void run() {
 		
 		ServerSocket sock = null;
 		try {
-			sock = new ServerSocket(port, backlog, InetAddress.getByName(bindAddress));
+			sock = new ServerSocket(port);
 		} catch (IOException e) {
 			throw new RuntimeException("MiniHTTP can not listen on given port: " + port);
 		}

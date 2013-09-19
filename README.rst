@@ -63,8 +63,8 @@ stream name). So you will end up with something like::
  java -cp lib/stream-m.jar StreamingServer server.conf
 
 
-HTTP ACCES
-==========
+HTTP ACCESS
+===========
 
 Streams are identified by a name. The program refers to this as StreamID or
 streamname. Note that the < and > characters are used just to signal that

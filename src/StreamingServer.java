@@ -111,7 +111,7 @@ class StreamingServer {
 			String streamID = requestPath.substring(resLength + 1);
 			
 			// is a stream with that name defined?
-			if (settings.get("streams." + streamID) == null)
+			if ((settings.get("streams." + streamID) == null) && (settings.get("streams.*") == null))
 				throw new HTTPException(403, "Stream Not Registered");
 			
 			// check password
